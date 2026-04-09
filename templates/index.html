@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Transfer</title>
+</head>
+<style>
+    .error {
+        color: red;
+    }
+</style>
+<body>
+    {% if error is not none %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    <form method="post" action="/download" enctype="multipart/form-data">
+        <div>
+            {{ file.csrf_token }}
+            transfer_type: {{ file.transfer_type }}
+            file: {{ file.file }}
+        </div>
+        <div>
+            captcha: {{ captcha_html(captcha)|safe }}
+        </div>
+        <button type="submit" class="button">submit</button>
+    </form>
+</body>
+</html>
