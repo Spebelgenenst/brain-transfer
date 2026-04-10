@@ -16,14 +16,11 @@
         <p class="error">{{ error }}</p>
     {% endif %}
     <form method="post" action="/download" enctype="multipart/form-data">
-        <div>
-            {{ file.csrf_token }}
-            transfer_type: {{ file.transfer_type }}
-            file: {{ file.file }}
-        </div>
-        <div>
-            captcha: {{ captcha_html(captcha)|safe }}
-        </div>
+        {{ file.csrf_token }}
+        <p>transfer_type: {{ file.transfer_type }}</p>
+        <p>{{ file.download }} direct download (select if you have any issues)</p>
+        <p>file: {{ file.file }}</p>
+        captcha: {{ captcha_html(captcha)|safe }}
         <button type="submit" class="button">submit</button>
     </form>
 </body>
