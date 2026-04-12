@@ -11,7 +11,7 @@
         color: red;
     }
     video {
-        height: 512px; /* Beispielgröße, anpassen nach Bedarf */
+        height: 256px; /* Beispielgröße, anpassen nach Bedarf */
         image-rendering: crisp-edges; /* Fallback für Firefox */
         image-rendering: pixelated; /* Moderne Browser (Chrome, Edge, Safari) */
     }
@@ -28,7 +28,7 @@
     {% endif %}
 
     {% if transfer_type == "video/mp4" %}
-        <video id="file">
+        <video id="file" disablePictureInPicture>
             <source src="/get_file?transfer_type=video/mp4" type="video/mp4">
             Your browser does not support the video element. (please report)
         </video>
@@ -40,7 +40,7 @@
         <button type="submit" class="button">submit</button>
     </form>
 
-    <iframe width="1840" height="1035" src="https://www.youtube.com/embed/{{ youtube_video }}{{ "?mute=1" if transfer_type == "audio/wav" else "" }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/{{ youtube_video }}{{ "?mute=1" if transfer_type == "audio/wav" else "" }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </body>
 <script>
     var file = document.getElementById("file"); 
