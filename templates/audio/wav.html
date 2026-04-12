@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Transfer - player</title>
+    <link rel="icon" href="./static/favicon.ico">
+</head>
+<style>
+    .error {
+        color: red;
+    }
+</style>
+<body>
+    <audio id="file" controls>
+        <source src="/get_file?transfer_type=audio/wav" type="audio/wav">
+        Your browser does not support the audio element. (please report)
+    </audio>
+    <br>
+    <iframe width="1840" height="1035" src="https://www.youtube.com/embed/dsIOso4gsQI" title="Subway Surfers City (2026) - Gameplay [4K 16x9 60FPS] No Copyright" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</body>
+<script>
+    var file = document.getElementById("file"); 
+    file.volume = 0.1;
+</script>
+</html>

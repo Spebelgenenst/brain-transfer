@@ -1,9 +1,11 @@
-from flask import Flask, render_template, redirect, url_for, request, send_file, make_response
+from flask import Flask, render_template, redirect, url_for, request, send_file, make_response, session
 
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import FileField, SelectField, BooleanField
 from wtforms.validators import InputRequired, Optional
+
+from flask_session import Session
 
 from flask_simple_captcha import CAPTCHA
 
@@ -30,8 +32,14 @@ CAPTCHA_CONFIG = {
 SIMPLE_CAPTCHA = CAPTCHA(CAPTCHA_CONFIG)
 app = SIMPLE_CAPTCHA.init_app(app)
 
+app.config["SESSION_PERMANENT"] = False     # Sessions expire when the browser is closed
+app.config["SESSION_TYPE"] = "filesystem"     # Store session data in files
+
+# Initialize Flask-Session
+Session(app)
+
 class File_form(FlaskForm):
-    transfer_type = SelectField("transfer type", choices=[("audio", "Audio"), ("video", "Video")])
+    transfer_type = SelectField("transfer type", choices=[("audio/wav", "Audio"), ("video/mp4", "Video")])
     download = BooleanField("Direct Download")
     file = FileField("file", validators=[InputRequired()])
 
@@ -56,14 +64,24 @@ def download():
         return redirect(url_for("index", error="captcha failed!"))
 
     file = file_form.file.data
+    transfer_type = file_form.transfer_type.data
 
-    if file_form.transfer_type.data == "audio":
-        response = send_file(file_to_audio(file.read()), mimetype="audio/wav", as_attachment=file_form.download.data, download_name=f"{file.filename}.brain.wav")
+    if transfer_type == "audio/wav":
+        session[transfer_type] = file_to_audio(file.read())
 
-    if file_form.transfer_type.data == "video":
-        response = send_file(file_to_video(file.read()), mimetype="video/mp4", as_attachment=file_form.download.data, download_name=f"{file.filename}.brain.mp4")
+    if transfer_type == "video/mp4":
+        session[transfer_type] = file_to_video(file.read())
 
-    return response
+    return redirect(url_for("player", transfer_type=transfer_type))
+
+@app.route("/player")
+def player():
+    return render_template(request.args.get("transfer_type")+".html")
+
+@app.route("/get_file")
+def get_file():
+    transfer_type = request.args.get("transfer_type")
+    return send_file(session[transfer_type], as_attachment=False, mimetype=transfer_type)
 
 def file_to_audio(data):
     padding = len(data) % 2
@@ -79,7 +97,7 @@ def file_to_audio(data):
 def file_to_video(data):
     process = (
         ffmpeg
-        .input("pipe:", format="rawvideo", pix_fmt="rgb8", s="64x64", r=60)
+        .input("pipe:", format="rawvideo", pix_fmt="rgb8", s="64x64", r=30)
         .output("pipe:", pix_fmt="yuv420p", format="matroska", preset="ultrafast")
         .run_async(pipe_stdin=True, pipe_stdout=True)
     )
