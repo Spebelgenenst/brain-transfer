@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, send_file,
 
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
-from wtforms import FileField, SelectField, BooleanField
+from wtforms import FileField, SelectField, BooleanField, StringField
 from wtforms.validators import InputRequired, Optional
 
 from flask_session import Session
@@ -43,6 +43,9 @@ class File_form(FlaskForm):
     download = BooleanField("Direct Download")
     file = FileField("file", validators=[InputRequired()])
 
+class Youtube_form(FlaskForm):
+    url = StringField("Youtube Video URL", validators=[InputRequired()])
+
 @app.route("/")
 def index():
     file_form = File_form()
@@ -65,6 +68,7 @@ def download():
 
     file = file_form.file.data
     transfer_type = file_form.transfer_type.data
+    youtube_video = None
 
     if transfer_type == "audio/wav":
         session[transfer_type] = file_to_audio(file.read())
@@ -72,11 +76,27 @@ def download():
     if transfer_type == "video/mp4":
         session[transfer_type] = file_to_video(file.read())
 
-    return redirect(url_for("player", transfer_type=transfer_type))
+    if file_form.download.data:
+        return send_file(session[transfer_type], as_attachment=True, mimetype=transfer_type, download_name=f"{file.filename}.brain")
 
-@app.route("/player")
+    return redirect(url_for("player", transfer_type=transfer_type, youtube_video=youtube_video))
+
+@app.route("/player", methods=["post", "get"])
 def player():
-    return render_template(request.args.get("transfer_type")+".html")
+    transfer_type = request.args.get("transfer_type")
+    youtube_video = request.args.get("youtube_video")
+    youtube_form = Youtube_form()
+
+    if youtube_form.validate_on_submit():
+        youtube_video = extract_video(youtube_form.url.data)
+
+    elif transfer_type == "audio/wav":
+        youtube_video = "dsIOso4gsQI"
+
+    elif transfer_type == "video/mp4":
+        youtube_video = "FhKuI-FgD60"
+
+    return render_template("player.html", youtube_video=youtube_video, youtube_form=youtube_form, transfer_type=transfer_type)
 
 @app.route("/get_file")
 def get_file():
@@ -108,6 +128,11 @@ def file_to_video(data):
     output_data, _ = process.communicate(input=data)
     
     return io.BytesIO(output_data)
+
+def extract_video(url):
+    start = url.find("v=") + 2
+    end = url.find("&")
+    return url[start:end if end != -1 else None]
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

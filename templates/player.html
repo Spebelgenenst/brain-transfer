@@ -19,7 +19,7 @@
 <body>
     <button onclick="playPause()">Play/Pause</button>
     <button onclick="reset()">Reset</button>
-    <p id="fileDuration"></p>
+    <p id="fileDuration">loading..</p>
     {% if transfer_type == "audio/wav" %}
         <audio id="file" controls>
             <source src="/get_file?transfer_type=audio/wav" type="audio/wav">
@@ -33,6 +33,14 @@
             Your browser does not support the video element. (please report)
         </video>
     {% endif %}
+
+    <form method="post" action="/player?transfer_type={{ transfer_type }}" enctype="multipart/form-data">
+        {{ youtube_form.csrf_token }}
+        <p>Custom Youtube Video URL: {{ youtube_form.url }}</p>
+        <button type="submit" class="button">submit</button>
+    </form>
+
+    <iframe width="1840" height="1035" src="https://www.youtube.com/embed/{{ youtube_video }}{{ "?mute=1" if transfer_type == "audio/wav" else "" }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </body>
 <script>
     var file = document.getElementById("file"); 
@@ -42,7 +50,7 @@
         file.play();
         file.pause();
         file.currentTime = 0;
-        document.getElementById("fileDuration").innerHTML = file.duration + " seconds";
+        document.getElementById("fileDuration").innerHTML = file.duration + " seconds (may be wrong)";
     })
 
     function playPause() { 
