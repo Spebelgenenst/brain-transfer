@@ -102,9 +102,9 @@ def file_to_video(data):
         .run_async(pipe_stdin=True, pipe_stdout=True)
     )
 
-    padding = len(data) % 3072
+    padding = len(data) % 4096
     if padding != 0:
-        data += b"\x00" * (3072 - padding)
+        data += b"\x00" * (4096 - padding)
     output_data, _ = process.communicate(input=data)
     
     return io.BytesIO(output_data)
