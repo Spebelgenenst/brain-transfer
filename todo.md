@@ -1,9 +1,9 @@
-[x] auto delete
-[x] video and audio transfer
-[x] media player
-[ ] word transfer
-[ ] styling
-[ ] Privacy Policy
-[ ] fix media length
-[ ] add 404
-[ ] add file doesn't exist message
+- [x] auto delete
+- [x] video and audio transfer
+- [x] media player
+- [ ] word transfer
+- [ ] styling
+- [ ] Privacy Policy
+- [ ] fix media length
+- [ ] add 404
+- [ ] add file doesn't exist message
