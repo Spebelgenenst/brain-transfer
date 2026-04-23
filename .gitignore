@@ -1,5 +1,6 @@
 credentials.json
 flask_session/
+media/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
