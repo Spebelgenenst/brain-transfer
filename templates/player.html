@@ -23,14 +23,14 @@
         <div id="fileDuration">file may not exist</div>
         {% if transfer_type == "audio/wav" %}
             <audio id="file" controls>
-                <source src="/get_file?transfer_type=audio/wav" type="audio/wav">
+                <source id="media" src="/get_file?transfer_type=audio/wav" type="audio/wav">
                 Your browser does not support the audio element. (please report)
             </audio>
         {% endif %}
 
         {% if transfer_type == "video/mp4" %}
-            <video id="file" disablePictureInPicture>
-                <source src="/get_file?transfer_type=video/mp4" type="video/mp4">
+            <video id="file" disablePictureInPicture controls>
+                <source id="media" src="/get_file?transfer_type=video/mp4" type="video/mp4">
                 Your browser does not support the video element. (please report)
             </video>
         {% endif %}
@@ -49,10 +49,7 @@
     var file = document.getElementById("file"); 
     file.volume = 0.1;
 
-    file.addEventListener('loadedmetadata', function() {
-        file.play();
-        file.pause();
-        file.currentTime = 0;
+    file.addEventListener('loadeddata', function() {
         document.getElementById("fileDuration").innerHTML = file.duration + " seconds (may be wrong)";
     })
 

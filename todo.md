@@ -4,6 +4,6 @@
 - [ ] word transfer
 - [ ] styling
 - [ ] Privacy Policy
-- [ ] fix media length
+- [x] fix media length
 - [ ] add 404
 - [ ] add file doesn't exist message
