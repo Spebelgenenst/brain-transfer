@@ -162,13 +162,12 @@ def extract_video(url):
 
 @scheduler.task("interval", days=1)
 def delete_files():
-    with app.app_context():
-        cutoff_time = datetime.now() - timedelta(days=1)
-        files=os.listdir("media/")
-        
-        for file in files:
-            if datetime.strptime(file, '%Y-%m-%d %H:%M:%S.%f') < cutoff_time:
-                os.remove("media/"+file)
+    cutoff_time = datetime.now() - timedelta(days=1)
+    files=os.listdir("media/")
+    
+    for file in files:
+        if datetime.strptime(file, '%Y-%m-%d %H:%M:%S.%f') < cutoff_time:
+            os.remove("media/"+file)
         
 
 if __name__ == "__main__":
