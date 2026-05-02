@@ -2,7 +2,7 @@
 - [x] video and audio transfer
 - [x] media player
 - [ ] word transfer
-- [ ] styling
+- [x] styling
 - [ ] Privacy Policy
 - [x] fix media length
 - [ ] add 404
