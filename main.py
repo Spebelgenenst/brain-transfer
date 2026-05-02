@@ -127,6 +127,10 @@ def get_file():
         return redirect(url_for("index"))
     return send_file(file_path, as_attachment=False, mimetype=transfer_type)
 
+@app.errorhandler(404)
+def error_404(e):
+    return "404"
+
 def file_to_audio(data, file_name):
     padding = len(data) % 2
     if padding != 0:
