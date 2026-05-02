@@ -11,7 +11,7 @@
     <div>
         <button class="button" onclick="playPause()">Play/Pause</button>
         <button class="button" onclick="reset()">Reset</button>
-        <div id="fileDuration">file may not exist</div>
+        <div id="fileDuration">file dosn't exist! <a href="/">return to homepage</a></div>
         {% if transfer_type == "audio/wav" %}
             <audio id="file" controls>
                 <source id="media" src="/get_file?transfer_type=audio/wav" type="audio/wav">
