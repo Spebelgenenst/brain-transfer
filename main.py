@@ -98,7 +98,7 @@ def download():
         file_to_video(file.read(), file_name)
 
     if file_form.download.data:
-        return redirect(url_for("/get_file", transfer_type=transfer_type))
+        return redirect(url_for("get_file", transfer_type=transfer_type))
 
     return redirect(url_for("player", transfer_type=transfer_type, youtube_video=youtube_video))
 
@@ -124,7 +124,7 @@ def get_file():
     transfer_type = request.args.get("transfer_type")
     file_path = "media/" + session[transfer_type]
     if not os.path.exists(file_path):
-        return redirect(url_for("/"))
+        return redirect(url_for("index"))
     return send_file(file_path, as_attachment=False, mimetype=transfer_type)
 
 def file_to_audio(data, file_name):
