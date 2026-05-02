@@ -1,0 +1,97 @@
+:root {
+    --main-color: blue;
+    --text: white;
+    --bg: white;
+    --hover: rgb(230, 230, 230);
+    --buton-border: 3px solid var(--main-color);
+}
+.error {
+    color: red;
+}
+video {
+    height: 256px;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+.button {
+    border: var(--buton-border);
+    background-color: var(--bg);
+    color: var(--main-color);
+}
+.button:hover {
+    background-color: var(--hover);
+}
+.button:active {
+    background-color: var(--main-color);
+    color: var(--text);
+}
+
+.button_file::file-selector-button {
+    border: var(--buton-border);
+    background-color: var(--bg);
+    color: var(--main-color);
+}
+.button_file::file-selector-button:hover {
+    background-color: var(--hover);
+}
+.button_file::file-selector-button:active {
+    background-color: var(--main-color);
+    color: var(--text);
+}
+
+.simple-captcha img,
+.captcha img {
+    border: var(--buton-border);
+}
+.simple-captcha input[type=text],
+.captcha input[type=text] {
+    border: var(--buton-border);
+    background-color: var(--bg);
+    color: var(--main-color);
+}
+.simple-captcha input[type=text]:hover,
+.captcha input[type=text]:hover {
+    background-color: var(--hover);
+}
+.simple-captcha input[type=text]:focus,
+.captcha input[type=text]:focus {
+    background-color: var(--main-color);
+    color: var(--text);
+}
+
+/* everything for checkboxes is ai generated :3 (me to dumb :c) */
+input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: var(--buton-border);
+    background-color: var(--bg);
+    cursor: pointer;
+    position: relative;
+}
+
+input[type="checkbox"]:hover {
+    background-color: var(--hover);
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--main-color);
+}
+
+input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: var(--text);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+}
+
+body {
+    background-image: url("/static/crumpled_paper_ai_v2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    overflow: hidden;
+}
