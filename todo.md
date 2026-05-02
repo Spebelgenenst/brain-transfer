@@ -8,3 +8,4 @@
 - [ ] add 404
 - [x] add file doesn't exist message
 - [ ] drag and drop
+- [ ] add brain to file function
