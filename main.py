@@ -76,7 +76,7 @@ def download():
 
     c_hash = request.form.get("captcha-hash")
     c_text = request.form.get("captcha-text")
-    if False: # not SIMPLE_CAPTCHA.verify(c_text, c_hash):
+    if False: # not (SIMPLE_CAPTCHA.verify(c_text, c_hash) or request.user_agent == "w3m"):
         return redirect(url_for("index", error="captcha failed!"))
     
     file_form = File_form()
