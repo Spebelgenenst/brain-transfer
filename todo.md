@@ -7,3 +7,4 @@
 - [x] fix media length
 - [ ] add 404
 - [ ] add file doesn't exist message
+- [ ] drag and drop
