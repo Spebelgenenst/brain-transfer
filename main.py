@@ -172,7 +172,7 @@ def file_to_video(data, file_name):
     process.communicate(input=data)
 
 def file_to_words(data, file_name):
-    with open("media/" + file_name, "w") as file, open("words.txt", "r") as word_list:
+    with open("media/" + file_name, "w") as file, open("words_alpha.txt", "r") as word_list:
         words = word_list.readlines()
         while True:
             byte_data = data.read(2)
