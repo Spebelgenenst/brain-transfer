@@ -58,7 +58,7 @@ def FileSizeLimit():
     return file_length_check
 
 class File_form(FlaskForm):
-    transfer_type = SelectField("transfer type", choices=[("audio/wav", "Audio"), ("video/mp4", "Video")])
+    transfer_type = SelectField("transfer type", choices=[("audio/wav", "Audio"), ("video/mp4", "Video"), ("words/txt", "Words")])
     download = BooleanField("Direct Download")
     file = FileField("file", [InputRequired(), FileSizeLimit()])
 
@@ -71,8 +71,8 @@ def index():
     captcha = SIMPLE_CAPTCHA.create()
     return render_template("index.html", captcha=captcha, file=file_form, error=request.args.get("error"))
 
-@app.route("/download", methods=["post", "get"])
-def download():
+@app.route("/process_file", methods=["post", "get"])
+def process_file():
     if request.method == "GET":
         return redirect(url_for("index"))
 
@@ -88,7 +88,6 @@ def download():
     file = file_form.file.data
 
     transfer_type = file_form.transfer_type.data
-    youtube_video = None
 
     file_name = str(datetime.now())
     session[transfer_type] = file_name
@@ -99,13 +98,16 @@ def download():
     if transfer_type == "video/mp4":
         file_to_video(file.read(), file_name)
 
+    if transfer_type == "words/txt":
+        file_to_words(file, file_name)
+
     if file_form.download.data:
-        return redirect(url_for("get_file", transfer_type=transfer_type))
+        return redirect(url_for("download", transfer_type=transfer_type))
 
-    return redirect(url_for("player", transfer_type=transfer_type, youtube_video=youtube_video))
+    return redirect(url_for("media", transfer_type=transfer_type))
 
-@app.route("/player", methods=["post", "get"])
-def player():
+@app.route("/media", methods=["post", "get"])
+def media():
     transfer_type = request.args.get("transfer_type")
     youtube_video = request.args.get("youtube_video")
     youtube_form = Youtube_form()
@@ -116,18 +118,29 @@ def player():
     elif transfer_type == "audio/wav":
         youtube_video = "dsIOso4gsQI"
 
-    elif transfer_type == "video/mp4":
+    elif transfer_type in ["video/mp4", "words/txt"]:
         youtube_video = "FhKuI-FgD60"
 
+    if transfer_type == "words/txt":
+        print(session["words/txt"])
+        with open("media/" + session["words/txt"], "r") as f:
+            text = f.read()
+        return render_template("reader.html", youtube_video=youtube_video, youtube_form=youtube_form, text=text)
     return render_template("player.html", youtube_video=youtube_video, youtube_form=youtube_form, transfer_type=transfer_type)
 
 @app.route("/get_file")
 def get_file():
     transfer_type = request.args.get("transfer_type")
     file_path = "media/" + session[transfer_type]
-    if not os.path.exists(file_path):
-        return redirect(url_for("index"))
+    #if not os.path.exists(file_path):
+    #    return redirect(url_for("index"))
     return send_file(file_path, as_attachment=False, mimetype=transfer_type)
+
+@app.route("/download")
+def download():
+    transfer_type = request.args.get("transfer_type")
+    file_path = "media/" + session[transfer_type]
+    return send_file(file_path, download_name="brain_transfer_"+transfer_type.replace("/", "."), as_attachment=True)
 
 @app.errorhandler(404)
 def error_404(e):
@@ -154,7 +167,18 @@ def file_to_video(data, file_name):
         data += b"\x00" * (4096 - padding)
 
     process.communicate(input=data)
-    
+
+def file_to_words(data, file_name):
+    with open("media/" + file_name, "w") as file, open("words.txt", "r") as word_list:
+        words = word_list.readlines()
+        while True:
+            byte_data = data.read(2)
+            if not byte_data:
+                break
+            number = int.from_bytes(byte_data, byteorder='little')
+            word = words[number].strip()
+            file.write(str(word) + " ")
+
 def extract_video(url):
     start = url.find("v=") + 2
     end = url.find("&")

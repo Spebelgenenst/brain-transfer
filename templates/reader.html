@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Transfer - reader</title>
+    <link rel="icon" href="./static/favicon.ico">
+    <link rel="stylesheet" href="./static/css/styles.css">
+</head>
+<body>
+    <div>
+        <iframe {{ "width=1538 height=865 " if transfer_type == "audio/wav" else "" }} src="https://www.youtube.com/embed/{{ youtube_video }}{{ "?mute=1" if transfer_type == "audio/wav" else "" }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+        <form method="post" action="/player?transfer_type={{ transfer_type }}" enctype="multipart/form-data">
+            {{ youtube_form.csrf_token }}
+            Custom Youtube Video URL: {{ youtube_form.url(class="button") }}
+            <button type="submit" class="button">submit</button>
+        </form>
+    </div>
+    <div>
+        {{ text }}
+    </div>
+</body>
+</html>

@@ -11,7 +11,7 @@
     {% if error is not none %}
         <p class="error">{{ error }}</p>
     {% endif %}
-    <form method="post" action="/download" enctype="multipart/form-data">
+    <form method="post" action="/process_file" enctype="multipart/form-data">
         {{ file.csrf_token }}
         <p>transfer_type: {{ file.transfer_type(class="button") }}</p>
         <p>{{ file.download }} direct download (select if you have any issues)</p>

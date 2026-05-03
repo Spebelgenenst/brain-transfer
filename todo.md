@@ -1,7 +1,7 @@
 - [x] auto delete
 - [x] video and audio transfer
 - [x] media player
-- [ ] word transfer
+- [x] word transfer
 - [x] styling
 - [ ] Privacy Policy
 - [x] fix media length
