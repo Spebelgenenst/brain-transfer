@@ -10,3 +10,4 @@
 - [ ] drag and drop
 - [ ] add brain to file function
 - [ ] add w3m support
+- [ ] advanced settings (framerate, herz, res ....)

@@ -142,9 +142,9 @@ def download():
     file_path = "media/" + session[transfer_type]
     return send_file(file_path, download_name="brain_transfer_"+transfer_type.replace("/", "."), as_attachment=True)
 
-@app.errorhandler(404)
-def error_404(e):
-    return "404"
+#@app.errorhandler(404)
+#def error_404(e):
+#    return "404"
 
 def file_to_audio(data, file_name):
     padding = len(data) % 2
