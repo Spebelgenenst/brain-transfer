@@ -9,7 +9,7 @@
     color: red;
 }
 video {
-    height: 256px;
+    height: 512px;
     image-rendering: crisp-edges;
     image-rendering: pixelated;
 }
@@ -92,6 +92,5 @@ body {
     background-image: url("/static/crumpled_paper_ai_v2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-
-    overflow: hidden;
+    background-attachment: fixed;
 }
