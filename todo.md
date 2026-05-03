@@ -9,3 +9,4 @@
 - [x] add file doesn't exist message
 - [ ] drag and drop
 - [ ] add brain to file function
+- [ ] add w3m support
