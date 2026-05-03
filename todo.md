@@ -3,7 +3,7 @@
 - [x] media player
 - [x] word transfer
 - [x] styling
-- [ ] Privacy Policy
+- [x] Privacy Policy
 - [x] fix media length
 - [ ] add 404
 - [x] add file doesn't exist message
