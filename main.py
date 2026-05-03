@@ -142,6 +142,9 @@ def download():
     file_path = "media/" + session[transfer_type]
     return send_file(file_path, download_name="brain_transfer_"+transfer_type.replace("/", "."), as_attachment=True)
 
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
 #@app.errorhandler(404)
 #def error_404(e):
 #    return "404"
@@ -184,9 +187,9 @@ def extract_video(url):
     end = url.find("&")
     return url[start:end if end != -1 else None]
 
-@scheduler.task("interval", days=1)
+@scheduler.task("interval", hours=12)
 def delete_files():
-    cutoff_time = datetime.now() - timedelta(days=1)
+    cutoff_time = datetime.now() - timedelta(hours=12)
     files=os.listdir("media/")
     
     for file in files:
