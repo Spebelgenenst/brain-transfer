@@ -22,6 +22,9 @@ from random import randint
 from datetime import timedelta, datetime
 
 from flask_apscheduler import APScheduler
+import sys
+
+sys.set_int_max_str_digits(1000000000)
 
 with open("credentials.json", "r") as f:
     credentials = json.load(f)
@@ -58,7 +61,7 @@ def FileSizeLimit():
     return file_length_check
 
 class File_form(FlaskForm):
-    transfer_type = SelectField("transfer type", choices=[("audio/wav", "Audio"), ("video/mp4", "Video"), ("words/txt", "Words")])
+    transfer_type = SelectField("transfer type", choices=[("audio/wav", "Audio"), ("video/mp4", "Video"), ("words/txt", "Words"), ("number/txt", "Number")])
     download = BooleanField("Direct Download")
     file = FileField("file", [InputRequired(), FileSizeLimit()])
 
@@ -101,6 +104,9 @@ def process_file():
     if transfer_type == "words/txt":
         file_to_words(file, file_name)
 
+    if transfer_type == "number/txt":
+        file_to_number(file, file_name)
+
     if file_form.download.data:
         return redirect(url_for("download", transfer_type=transfer_type))
 
@@ -118,14 +124,14 @@ def media():
     elif transfer_type == "audio/wav":
         youtube_video = "dsIOso4gsQI"
 
-    elif transfer_type in ["video/mp4", "words/txt"]:
+    elif transfer_type in ["video/mp4", "words/txt", "number/txt"]:
         youtube_video = "FhKuI-FgD60"
 
-    if transfer_type == "words/txt":
-        print(session["words/txt"])
-        with open("media/" + session["words/txt"], "r") as f:
+    if transfer_type in ["words/txt", "number/txt"]:
+        with open("media/" + session[transfer_type], "r") as f:
             text = f.read()
         return render_template("reader.html", youtube_video=youtube_video, youtube_form=youtube_form, text=text)
+        
     return render_template("player.html", youtube_video=youtube_video, youtube_form=youtube_form, transfer_type=transfer_type)
 
 @app.route("/get_file")
@@ -179,8 +185,14 @@ def file_to_words(data, file_name):
             if not byte_data:
                 break
             number = int.from_bytes(byte_data, byteorder='little')
-            word = words[number].strip()
+            word = words[number*5].strip()
             file.write(str(word) + " ")
+
+def file_to_number(data, file_name):
+    with open("media/" + file_name, "w") as file:
+        byte_data = data.read()
+        number = int.from_bytes(byte_data, byteorder='little')
+        file.write(str(number))
 
 def extract_video(url):
     start = url.find("v=") + 2

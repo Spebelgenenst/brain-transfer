@@ -101,3 +101,6 @@ body {
     background-size: cover;
     background-attachment: fixed;
 }
+.text {
+    word-break: break-all;
+}
