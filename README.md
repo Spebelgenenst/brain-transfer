@@ -16,5 +16,6 @@ pip install -r requirements.txt
 {
     "secretKey": "<your secret key here>"
 }
+```
 
 3. create media/
