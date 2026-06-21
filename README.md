@@ -4,7 +4,7 @@ Transfer any file to your brain and use it as a flash drive
 ## website
 coming soon..
 
-## setup:
+## setup for selfhosting
 
 1. install all requirements
 ```
