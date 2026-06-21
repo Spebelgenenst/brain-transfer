@@ -65,9 +65,6 @@ class File_form(FlaskForm):
     download = BooleanField("Direct Download")
     file = FileField("file", [InputRequired(), FileSizeLimit()])
 
-class Youtube_form(FlaskForm):
-    url = StringField("Youtube Video URL", validators=[InputRequired()])
-
 @app.route("/")
 def index():
     file_form = File_form()
@@ -115,24 +112,13 @@ def process_file():
 @app.route("/media", methods=["post", "get"])
 def media():
     transfer_type = request.args.get("transfer_type")
-    youtube_video = request.args.get("youtube_video")
-    youtube_form = Youtube_form()
-
-    if youtube_form.validate_on_submit():
-        youtube_video = extract_video(youtube_form.url.data)
-
-    elif transfer_type == "audio/wav":
-        youtube_video = "dsIOso4gsQI"
-
-    elif transfer_type in ["video/mp4", "words/txt", "number/txt"]:
-        youtube_video = "FhKuI-FgD60"
 
     if transfer_type in ["words/txt", "number/txt"]:
         with open("media/" + session[transfer_type], "r") as f:
             text = f.read()
-        return render_template("reader.html", youtube_video=youtube_video, youtube_form=youtube_form, text=text)
+        return render_template("reader.html", text=text)
         
-    return render_template("player.html", youtube_video=youtube_video, youtube_form=youtube_form, transfer_type=transfer_type)
+    return render_template("player.html", transfer_type=transfer_type)
 
 @app.route("/get_file")
 def get_file():
@@ -193,11 +179,6 @@ def file_to_number(data, file_name):
         byte_data = data.read()
         number = int.from_bytes(byte_data, byteorder='little')
         file.write(str(number))
-
-def extract_video(url):
-    start = url.find("v=") + 2
-    end = url.find("&")
-    return url[start:end if end != -1 else None]
 
 @scheduler.task("interval", hours=12)
 def delete_files():

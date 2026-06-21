@@ -7,7 +7,6 @@ We collect the following data when you use our service:
 - **Uploaded files** (audio, video, text) for processing purposes
 - **Session identifiers** to manage access to your files
 - **CAPTCHA input** solely for spam prevention (not stored)
-- **YouTube URLs** (only the video ID is extracted, not stored)
 - **Technical data** such as IP addresses and user agents for security checks (not stored permanently)
 
 ## 2. Purpose of Data Use
@@ -23,7 +22,6 @@ We collect the following data when you use our service:
 ## 4. User Rights
 - Access to your files is automatically revoked when your session ends
 - Files are permanently deleted from our servers after 24 hours
-- No user data is shared with third parties, except for YouTube embeds, which are subject to YouTube’s own privacy policy
 
 ## 5. Security
 - Files are processed locally and stored securely on our server
