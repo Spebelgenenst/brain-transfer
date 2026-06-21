@@ -153,7 +153,7 @@ def file_to_video(data, file_name):
     process = (
         ffmpeg
         .input("pipe:", format="rawvideo", pix_fmt="rgb8", s="64x64", r=30)
-        .output("media/" + file_name, pix_fmt="yuv420p", format="matroska", preset="ultrafast")
+        .output("media/" + file_name, pix_fmt="yuv420p", format="mp4",vcodec="libx264" , preset="ultrafast")
         .run_async(pipe_stdin=True)
     )
 
