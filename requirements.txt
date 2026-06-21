@@ -1,0 +1,8 @@
+flask_apscheduler
+psutil
+scipy
+numpy
+flask_simple_captcha
+flask_wtf
+python-ffmpeg
+flask
